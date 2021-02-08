@@ -61,6 +61,17 @@
             width: 80%;
             border-color: #999;
         }
+        
+
+        #gujNote {
+            display: none;
+            border: 2px solid #cc9;
+            color: #cc9;
+            border-radius: 5px;
+            padding: 1em;
+            line-height: 1.5em;
+            margin: 1em;
+        }
     </style>
 </head>
 
@@ -69,7 +80,9 @@
     <div id="header">
         <div>Zoom AV Schedule</div>
     </div>
+    <hr>
     <div id="thisWeek">
+        <div id="gujNote"><i class="material-icons">error_outline</i> <span id="gujNoteSpan" style="font-weight: 500;">Hey </span>, don't forget to start the Gujarati meeting <span id="gujNoteSpan2">this Sunday</span>.</div>
         <table>
             <thead>
                 <tr>
@@ -115,17 +128,36 @@
         const scheduleTableBody = document.querySelector("#schedule tbody");
 
         function load(){
-            thisWeekTableBody.innerHTML += getRow();
+            let today = new Date();
+
+            thisWeekTableBody.innerHTML += getRow(today);
             
             //get next 8 dates
-            let d = new Date();
-
+            let d = new Date(today);
             let rows = [];
             for(let i = 0; i < 8; i++){
                 d.setDate(d.getDate() + 7);
                 rows.push(getRow(d));
             }
             scheduleTableBody.innerHTML += rows.join("");
+
+            //guj meeting
+            let thisWeekInfo = getWeekInfo(today);
+            let week = weekCycle[thisWeekInfo.weekNum % 8];
+            if(thisWeekInfo.isFirstSunday){
+                if(thisWeekInfo.sunday.isSameDateAs(today)){
+                    document.getElementById("gujNoteSpan2").innerText = "today at 9:30am";
+                }else
+                if((thisWeekInfo.sunday.getDate() - 1) == today.getDate() ){
+                    document.getElementById("gujNoteSpan2").innerText = "tomorrow at 9:30am";
+                }else{
+                    document.getElementById("gujNoteSpan2").innerText = "this Sunday";
+                }
+
+                document.getElementById("gujNoteSpan").innerText += week.Attendant;
+                document.getElementById("gujNote").style.display = "block";
+
+            }
         }
 
         function getRow(date){
@@ -136,7 +168,7 @@
 
             return `<tr>
                 <td style="display: flex; justify-content: space-evenly; font-weight: 500">
-                    <div style="color: #99131e">${t}</div>
+                    <div style="color: #ca3b47">${t}</div>
                     <div style="color: #799fcc">${s}</div>
                 </td>
                 <td>${week.Sound}</td>
@@ -175,10 +207,15 @@
             weekNum--; //while loop overshoots by 1
             let tuesday = new Date(day.setDate(day.getDate() - 6));
             let sunday = new Date(day.setDate(day.getDate() + 5));
+
+            //first Sunday of the month?
+            let isFirstSunday = sunday.getDate() <= 7;
+
             return {
                 tuesday,
                 sunday,
-                weekNum
+                weekNum,
+                isFirstSunday
             }
         }
 
