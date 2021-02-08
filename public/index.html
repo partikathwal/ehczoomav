@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#191919">
+    
+    <title>Zoom AV Schedule</title>
+    <style>
+        body {
+            margin: 0;
+            background-color: #222;
+            color: #ccc;
+            font-family: 'Roboto', sans-serif;
+        }
+        .material-icons {
+            vertical-align: -28%;
+        }
+
+        #header {
+            background-color: #000;
+            padding: 1.25em;
+            font-weight: 500;
+        }
+
+
+        /* THIS WEEK */
+        table {
+            margin: 1em auto;
+            border-collapse: collapse;
+        }
+        th {font-weight: 500; padding: 1em 0;}
+        td {
+            padding: 1em 0;
+            text-align: center;
+            width: 6em;
+        }
+        th:first-child, td:first-child {
+            width: 8em;
+        }
+        td:first-child {background-color: #111;}
+        tbody tr:nth-child(2n+1) {
+            background-color: #202020;
+        }
+        tbody tr:nth-child(2n){
+            background-color: #292929;
+        }
+
+        hr {
+            margin: 2em auto;
+            width: 80%;
+            border-color: #999;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="header">
+        <div>Zoom AV Schedule</div>
+    </div>
+    <div id="thisWeek">
+        <table>
+            <thead>
+                <tr>
+                    <th><i class="material-icons">today</i></th>
+                    <th><i class="material-icons">volume_up</i></th>
+                    <th><i class="material-icons">ondemand_video</i></th>
+                    <th>
+                        <i class="material-icons">people_alt</i>&nbsp;<span style="font-size: 1em">(<i class="material-icons" style="font-size: inherit;">ondemand_video</i>)</span>
+                    </th>
+                    <th><i class="material-icons">notifications_off</i></th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    <div id="scheduleSection">
+        <hr>
+        <div id="schedule">
+            <table>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+
+        const weekCycle = [
+            { "Sound": "Amit", "Media": "Hershel", "Attendant": "Mihir", "Off": "Partik" },
+            { "Sound": "Partik", "Media": "Amit", "Attendant": "Hershel", "Off": "Mihir" },
+            { "Sound": "Hershel", "Media": "Mihir", "Attendant": "Partik", "Off": "Amit" },
+            { "Sound": "Amit", "Media": "Hershel", "Attendant": "Mihir", "Off": "Partik" },
+            { "Sound": "Mihir", "Media": "Partik", "Attendant": "Amit", "Off": "Hershel" },
+            { "Sound": "Hershel", "Media": "Mihir", "Attendant": "Partik", "Off": "Amit" },
+            { "Sound": "Partik", "Media": "Amit", "Attendant": "Hershel", "Off": "Mihir" },
+            { "Sound": "Mihir", "Media": "Partik", "Attendant": "Amit", "Off": "Hershel" }
+        ];
+
+        const tueDateDiv = document.querySelector("#tueDate");
+        const sunDateDiv = document.querySelector("#sunDate");
+        const thisWeekTableBody = document.querySelector("#thisWeek tbody");
+        const scheduleTableBody = document.querySelector("#schedule tbody");
+
+        function load(){
+            thisWeekTableBody.innerHTML += getRow();
+            
+            //get next 8 dates
+            let d = new Date();
+
+            let rows = [];
+            for(let i = 0; i < 8; i++){
+                d.setDate(d.getDate() + 7);
+                rows.push(getRow(d));
+            }
+            scheduleTableBody.innerHTML += rows.join("");
+        }
+
+        function getRow(date){
+            let weekInfo = getWeekInfo(date);
+            let week = weekCycle[weekInfo.weekNum % 8];
+            let t = formatDate(weekInfo.tuesday);
+            let s = formatDate(weekInfo.sunday);
+
+            return `<tr>
+                <td style="display: flex; justify-content: space-evenly; font-weight: 500">
+                    <div style="color: #99131e">${t}</div>
+                    <div style="color: #799fcc">${s}</div>
+                </td>
+                <td>${week.Sound}</td>
+                <td>${week.Media}</td>
+                <td>${week.Attendant}</td>
+                <td>${week.Off}</td>
+            </tr>`;
+        }
+
+        Date.prototype.isSameDateAs = function (date) {
+            let y1 = this.getFullYear();
+            let m1 = this.getMonth();
+            let d1 = this.getDate();
+
+            let y2 = date.getFullYear();
+            let m2 = date.getMonth();
+            let d2 = date.getDate();
+
+            return y1 === y2 && m1 === m2 && d1 === d2;
+        }
+
+        function getWeekInfo(date) {
+            //get first monday of year
+            const today = date || new Date();
+            let day = new Date(today.getFullYear(), 0, 1);
+            while (day.getDay() !== 1) {
+                day.setDate(day.getDate() + 1);
+            }
+
+            //count until we pass today
+            let weekNum = 1;
+            while (day < today || day.isSameDateAs(today)) {
+                day.setDate(day.getDate() + 7);
+                weekNum++;
+            }
+            weekNum--; //while loop overshoots by 1
+            let tuesday = new Date(day.setDate(day.getDate() - 6));
+            let sunday = new Date(day.setDate(day.getDate() + 5));
+            return {
+                tuesday,
+                sunday,
+                weekNum
+            }
+        }
+
+        function formatDate(date){
+            let str = date.toDateString();
+            let parts = str.split(" ").slice(1, -1);
+            parts[1] = parseInt(parts[1]).toString();
+            return parts.join(" ");
+        }
+
+        load();
+
+    </script>
+</body>
+</html>
