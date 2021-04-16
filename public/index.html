@@ -92,7 +92,6 @@
                     <th>
                         <i class="material-icons">people_alt</i>&nbsp;<span style="font-size: 1em">(<i class="material-icons" style="font-size: inherit;">ondemand_video</i>)</span>
                     </th>
-                    <th><i class="material-icons">notifications_off</i></th>
                 </tr>
             </thead>
             <tbody>
@@ -112,14 +111,14 @@
     <script>
 
         const weekCycle = [
-            { "Sound": "Amit", "Media": "Hershel", "Attendant": "Mihir", "Off": "Partik" },
-            { "Sound": "Partik", "Media": "Amit", "Attendant": "Hershel", "Off": "Mihir" },
-            { "Sound": "Hershel", "Media": "Mihir", "Attendant": "Partik", "Off": "Amit" },
-            { "Sound": "Amit", "Media": "Hershel", "Attendant": "Mihir", "Off": "Partik" },
-            { "Sound": "Mihir", "Media": "Partik", "Attendant": "Amit", "Off": "Hershel" },
-            { "Sound": "Hershel", "Media": "Mihir", "Attendant": "Partik", "Off": "Amit" },
-            { "Sound": "Partik", "Media": "Amit", "Attendant": "Hershel", "Off": "Mihir" },
-            { "Sound": "Mihir", "Media": "Partik", "Attendant": "Amit", "Off": "Hershel" }
+            { "Sound": "Amit", "Media": "Partik", "Attendant": "Mihir" },
+            { "Sound": "Partik", "Media": "Amit", "Attendant": "Mihir" },
+            { "Sound": "Mihir", "Media": "Mihir", "Attendant": "Partik" },
+            { "Sound": "Amit", "Media": "Partik", "Attendant": "Partik" },
+            { "Sound": "Mihir", "Media": "Amit", "Attendant": "Amit" },
+            { "Sound": "Amit", "Media": "Mihir", "Attendant": "Partik" },
+            { "Sound": "Partik", "Media": "Amit", "Attendant": "Mihir" },
+            { "Sound": "Mihir", "Media": "Partik", "Attendant": "Amit" },
         ];
 
         const tueDateDiv = document.querySelector("#tueDate");
@@ -174,7 +173,6 @@
                 <td>${week.Sound}</td>
                 <td>${week.Media}</td>
                 <td>${week.Attendant}</td>
-                <td>${week.Off}</td>
             </tr>`;
         }
 
