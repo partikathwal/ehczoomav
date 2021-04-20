@@ -111,14 +111,12 @@
     <script>
 
         const weekCycle = [
+            { "Sound": "Partik", "Media": "Mihir", "Attendant": "Amit" },
             { "Sound": "Amit", "Media": "Partik", "Attendant": "Mihir" },
-            { "Sound": "Partik", "Media": "Amit", "Attendant": "Mihir" },
-            { "Sound": "Mihir", "Media": "Mihir", "Attendant": "Partik" },
-            { "Sound": "Amit", "Media": "Partik", "Attendant": "Partik" },
-            { "Sound": "Mihir", "Media": "Amit", "Attendant": "Amit" },
-            { "Sound": "Amit", "Media": "Mihir", "Attendant": "Partik" },
-            { "Sound": "Partik", "Media": "Amit", "Attendant": "Mihir" },
-            { "Sound": "Mihir", "Media": "Partik", "Attendant": "Amit" },
+            { "Sound": "Mihir", "Media": "Amit", "Attendant": "Partik" },
+            { "Sound": "Partik", "Media": "Mihir", "Attendant": "Amit" },
+            { "Sound": "Amit", "Media": "Partik", "Attendant": "Mihir" },
+            { "Sound": "Mihir", "Media": "Amit", "Attendant": "Partik" },
         ];
 
         const tueDateDiv = document.querySelector("#tueDate");
@@ -131,10 +129,10 @@
 
             thisWeekTableBody.innerHTML += getRow(today);
             
-            //get next 8 dates
+            //get next dates
             let d = new Date(today);
             let rows = [];
-            for(let i = 0; i < 8; i++){
+            for(let i = 0; i < weekCycle.length; i++){
                 d.setDate(d.getDate() + 7);
                 rows.push(getRow(d));
             }
@@ -142,7 +140,7 @@
 
             //guj meeting
             let thisWeekInfo = getWeekInfo(today);
-            let week = weekCycle[thisWeekInfo.weekNum % 8];
+            let week = weekCycle[thisWeekInfo.weekNum % weekCycle.length];
             if(thisWeekInfo.isFirstSunday){
                 if(thisWeekInfo.sunday.isSameDateAs(today)){
                     document.getElementById("gujNoteSpan2").innerText = "today at 9:30am";
@@ -161,7 +159,7 @@
 
         function getRow(date){
             let weekInfo = getWeekInfo(date);
-            let week = weekCycle[weekInfo.weekNum % 8];
+            let week = weekCycle[weekInfo.weekNum % weekCycle.length];
             let t = formatDate(weekInfo.tuesday);
             let s = formatDate(weekInfo.sunday);
 
