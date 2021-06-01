@@ -92,6 +92,7 @@
                     <th>
                         <i class="material-icons">people_alt</i>&nbsp;<span style="font-size: 1em">(<i class="material-icons" style="font-size: inherit;">ondemand_video</i>)</span>
                     </th>
+                    <th><i class="material-icons">notifications_off</i></th>
                 </tr>
             </thead>
             <tbody>
@@ -111,12 +112,14 @@
     <script>
 
         const weekCycle = [
-            { "Sound": "Partik", "Media": "Mihir", "Attendant": "Amit" },
-            { "Sound": "Amit", "Media": "Partik", "Attendant": "Mihir" },
-            { "Sound": "Mihir", "Media": "Amit", "Attendant": "Partik" },
-            { "Sound": "Partik", "Media": "Mihir", "Attendant": "Amit" },
-            { "Sound": "Amit", "Media": "Partik", "Attendant": "Mihir" },
-            { "Sound": "Mihir", "Media": "Amit", "Attendant": "Partik" },
+            { "Sound": "Sunil", "Media": "Partik", "Attendant": "Mihir", "Off": "Amit" },
+            { "Sound": "Partik", "Media": "Mihir", "Attendant": "Amit", "Off": "Sunil" },
+            { "Sound": "Mihir", "Media": "Amit", "Attendant": "Sunil", "Off": "Partik" },
+            { "Sound": "Amit", "Media": "Sunil", "Attendant": "Partik", "Off": "Mihir" },
+            { "Sound": "Sunil", "Media": "Partik", "Attendant": "Mihir", "Off": "Amit" },
+            { "Sound": "Partik", "Media": "Mihir", "Attendant": "Amit", "Off": "Sunil" },
+            { "Sound": "Mihir", "Media": "Amit", "Attendant": "Sunil", "Off": "Partik" },
+            { "Sound": "Amit", "Media": "Sunil", "Attendant": "Partik", "Off": "Mihir" },
         ];
 
         const tueDateDiv = document.querySelector("#tueDate");
@@ -171,6 +174,7 @@
                 <td>${week.Sound}</td>
                 <td>${week.Media}</td>
                 <td>${week.Attendant}</td>
+                <td>${week.Off}</td>
             </tr>`;
         }
 
