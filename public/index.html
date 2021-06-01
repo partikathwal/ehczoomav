@@ -140,24 +140,6 @@
                 rows.push(getRow(d));
             }
             scheduleTableBody.innerHTML += rows.join("");
-
-            //guj meeting
-            let thisWeekInfo = getWeekInfo(today);
-            let week = weekCycle[thisWeekInfo.weekNum % weekCycle.length];
-            if(thisWeekInfo.isFirstSunday){
-                if(thisWeekInfo.sunday.isSameDateAs(today)){
-                    document.getElementById("gujNoteSpan2").innerText = "today at 9:30am";
-                }else
-                if((thisWeekInfo.sunday.getDate() - 1) == today.getDate() ){
-                    document.getElementById("gujNoteSpan2").innerText = "tomorrow at 9:30am";
-                }else{
-                    document.getElementById("gujNoteSpan2").innerText = "this Sunday";
-                }
-
-                document.getElementById("gujNoteSpan").innerText += week.Attendant;
-                document.getElementById("gujNote").style.display = "block";
-
-            }
         }
 
         function getRow(date){
